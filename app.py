@@ -3,7 +3,7 @@ from flask import Flask
 app = Flask(__name__)
 
 def my_function(x, y):
-    return x + y   # замените на любую простую операцию: x - y, x * y, x / y
+    return x * y   # замените на любую простую операцию: x - y, x * y, x / y
 
 @app.route('/')
 def home():
