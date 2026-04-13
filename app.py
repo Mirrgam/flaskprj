@@ -7,7 +7,7 @@ def my_function(x, y):
 
 @app.route('/')
 def home():
-    result = my_function(18, 5)
+    result = my_function(100, 5)
     return f"<h1>Результат: {result}</h1>"
 
 if __name__ == '__main__':
