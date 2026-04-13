@@ -8,8 +8,24 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Trigger PythonAnywhere reload
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Шаг 1: обновление кода через SSH
+      - name: Update code via SSH
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: 'ssh.pythonanywhere.com'
+          username: ${{ secrets.PA_USERNAME }}
+          key: ${{ secrets.PA_SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.PA_USERNAME }}/flaskprj
+            git pull origin main
+            source /home/${{ secrets.PA_USERNAME }}/.virtualenvs/myenv/bin/activate
+            pip install -r requirements.txt
+
+      # Шаг 2: перезагрузка веб-приложения через API
+      - name: Reload web app
         uses: umuttopalak/pythonanywhere-deploy-action@v1.1.0
         with:
           host: 'www.pythonanywhere.com'
