@@ -11,16 +11,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Шаг 1: обновление кода через SSH
-      - name: Update code via SSH
-        uses: appleboy/ssh-action@v0.1.5
+      # Шаг 2: перезагрузка веб-приложения через API
+      - name: Reload web app
+        uses: umuttopalak/pythonanywhere-deploy-action@v1.1.0
         with:
-          host: 'ssh.pythonanywhere.com'
+          host: 'www.pythonanywhere.com'
           username: ${{ secrets.PA_USERNAME }}
-          key: ${{ secrets.PA_SSH_KEY }}
-          script: |
-            cd /home/${{ secrets.PA_USERNAME }}/flaskprj
-            git pull origin main
-            source /home/${{ secrets.PA_USERNAME }}/.virtualenvs/myenv/bin/activate
-            pip install -r requirements.txt
-
+          api_token: ${{ secrets.PA_API_TOKEN }}
+          domain_name: '${{ secrets.PA_USERNAME }}.pythonanywhere.com'
